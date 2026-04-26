@@ -1,4 +1,4 @@
-ball = class({})
+ball = class{}
 
 function ball:init(x, y, width, height)
     self.x = x
@@ -25,3 +25,5 @@ end
 function ball:render()
     love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
 end
+
+return ball

@@ -1,10 +1,12 @@
 push = require 'push'
 
+class = require 'class'
+
 paddle = require 'paddle'
 
 ball = require 'ball'
 
-class = require 'class'
+
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -66,6 +68,9 @@ function love.update(dt)
     else
         player2.dy = 0
     end
+
+    player1:update(dt)
+    player2:update(dt)
 
     if gameState == 'play' then
         ball:update(dt)

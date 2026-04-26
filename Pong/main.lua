@@ -32,7 +32,8 @@ function love.load()
     sounds = {
         ['paddle'] = love.audio.newSource('sounds/paddle.wav', 'static'),
         ['score'] = love.audio.newSource('sounds/score.wav', 'static'),
-        ['wall'] = love.audio.newSource('sounds/wall.wav', 'static')
+        ['wall'] = love.audio.newSource('sounds/wall.wav', 'static'),
+        ['winning'] = love.audio.newSource('sounds/winning.wav', 'static')
     }
 
 
@@ -56,11 +57,19 @@ function love.load()
     })
 
 push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
-    upscale = 'normal'
+    upscale = true,
+    fullscreen = false,
+    resizable = true
 })
 
 end 
 
+
+function love.resize(w, h)
+    WINDOW_WIDTH = w
+    WINDOW_HEIGHT = h
+    push:resize(w, h)
+end
 
 function love.update(dt)
     if love.keyboard.isDown('w') then
@@ -132,6 +141,7 @@ function love.update(dt)
             if player2score == 2 then 
                 winner = 'Player 2'
                 gameState = 'done'
+                sounds['winning']:play()
                 -- player1score = 0
                 -- player2score = 0
             else
@@ -146,6 +156,7 @@ function love.update(dt)
             if player1score == 2 then
                 winner = 'Player 1'
                 gameState = 'done'
+                sounds['winning']:play()
                 -- player1score = 0
                 -- player2score = 0
             else
@@ -196,7 +207,7 @@ function love.draw()
     if gameState == 'start' and player1score == 0 and player2score == 0 then
         love.graphics.printf("Welcome to Pong!", 0, VIRTUAL_HEIGHT / 2 - 110, VIRTUAL_WIDTH, 'center')
         love.graphics.printf("Press Enter to Start", 0, VIRTUAL_HEIGHT / 2 - 100, VIRTUAL_WIDTH, 'center')
-    elseif (gameState == 'start' and player1score > 0) or player2score > 0 then
+    elseif gameState == 'start' and (player1score > 0 or player2score > 0) then
         love.graphics.printf("Press Enter to Serve", 0, VIRTUAL_HEIGHT / 2 - 100, VIRTUAL_WIDTH, 'center')
     elseif gameState == 'play' then
         love.graphics.printf("Playing", 0, VIRTUAL_HEIGHT / 2 - 110, VIRTUAL_WIDTH, 'center')

@@ -22,10 +22,12 @@ PADDLE_SPEED = 200
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
+    love.window.setTitle('Pong')
+
     math.randomseed(os.time())
 
     largeFont = love.graphics.newFont('font.otf', 32)
-    smallFont = love.graphics.newFont('font.otf', 12)
+    smallFont = love.graphics.newFont('font.otf', 8)
 
     player1score = 0
     player2score = 0
@@ -52,6 +54,7 @@ push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
 
 end 
 
+
 function love.update(dt)
     if love.keyboard.isDown('w') then
         player1.dy = -PADDLE_SPEED
@@ -74,8 +77,31 @@ function love.update(dt)
 
     if gameState == 'play' then
         ball:update(dt)
+
+
+        if ball:collides(player1) then
+            ball.dx = -ball.dx * 1.05
+            ball.x = player1.x + 5
+
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+
+        if ball:collides(player2) then
+            ball.dx = -ball.dx * 1.05
+            ball.x = player2.x - ball.width
+
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+        end
     end
-end
 
 -- function resetBall()
 --     ballX = VIRTUAL_WIDTH / 2 - 2
@@ -119,8 +145,10 @@ function love.draw()
     -- love.graphics.printf("Hello Pingo", 0, VIRTUAL_HEIGHT / 2 - 110, VIRTUAL_WIDTH, 'center')
 
 
+    love.graphics.setFont(largeFont)
     love.graphics.print(tostring(player1score), VIRTUAL_WIDTH / 2 - 25, VIRTUAL_HEIGHT / 2 - 80)
     love.graphics.print(tostring(player2score), VIRTUAL_WIDTH / 2 + 25, VIRTUAL_HEIGHT / 2 - 80)
+    love.graphics.setFont(smallFont)
 
     -- padle 1
     player1:render()
@@ -131,6 +159,21 @@ function love.draw()
     -- ball
     ball:render()
 
+    function displayFPS()
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(0, 1, 0, 1) -- green color for FPS
+    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10) -- .. concatenation operator to combine string and number
+    love.graphics.setColor(1, 1, 1, 1) -- to reset color to white
+end
+displayFPS()
 
     push:finish()
 end
+
+
+-- function displayFPS()
+--     love.graphics.setFont(smallFont)
+--     love.graphics.setColor(0, 1, 0, 1) -- green color for FPS
+--     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10) -- .. concatenation operator to combine string and number
+--     love.graphics.setColor(1, 1, 1, 1) -- to reset color to white
+-- end

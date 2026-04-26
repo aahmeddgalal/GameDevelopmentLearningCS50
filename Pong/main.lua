@@ -100,6 +100,17 @@ function love.update(dt)
                 ball.dy = math.random(10, 150)
             end
         end
+
+        if ball.y <= 0 then
+        ball.y = 0
+        ball.dy = -ball.dy
+        end
+
+        if ball.y >= VIRTUAL_HEIGHT - 4 then
+            ball.y = VIRTUAL_HEIGHT - 4
+            ball.dy = -ball.dy
+        end
+
         end
     end
 

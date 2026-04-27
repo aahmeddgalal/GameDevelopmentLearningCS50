@@ -138,7 +138,7 @@ function love.update(dt)
             sounds['score']:play()
             ball:reset()
 
-            if player2score == 2 then 
+            if player2score == 10 then 
                 winner = 'Player 2'
                 gameState = 'done'
                 sounds['winning']:play()
@@ -153,7 +153,7 @@ function love.update(dt)
             sounds['score']:play()
             ball:reset()
             
-            if player1score == 2 then
+            if player1score == 10 then
                 winner = 'Player 1'
                 gameState = 'done'
                 sounds['winning']:play()
